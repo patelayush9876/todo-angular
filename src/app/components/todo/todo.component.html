@@ -1,13 +1,33 @@
 <div class="todo-container">
-    <h1>Todo List</h1>
-    <input [(ngModel)]="todoText" placeholder="Add new task" />
-    <button (click)="addTodo()">Add</button>
-  
-    <ul>
-      <li *ngFor="let todo of todos; let i = index">
-        {{ todo }}
-        <button (click)="deleteTodo(i)">Delete</button>
-      </li>
-    </ul>
-  </div>
-  
+  <h1>Todo List</h1>
+
+  <label for="todoInput" class="visually-hidden">New Todo</label>
+  <input
+    id="todoInput"
+    [(ngModel)]="todoText"
+    placeholder="Add new task"
+    title="Add new task"
+  />
+  <button (click)="addTodo()">Add</button>
+
+  <ul>
+    <li
+      *ngFor="let todo of todos; let i = index"
+      [class.completed]="todo.completed"
+    >
+      <label class="checkbox-label">
+        <input
+          type="checkbox"
+          [(ngModel)]="todo.completed"
+          (change)="toggleCompleted(i)"
+          [attr.title]="'Mark ' + todo.text + ' as completed'"
+        />
+        <span>{{ todo.text }}</span>
+      </label>
+
+      <button (click)="deleteTodo(i)" title="Delete this task">
+        Delete
+      </button>
+    </li>
+  </ul>
+</div>
