@@ -26,7 +26,33 @@ export class TodoComponent implements OnInit {
     });
   }
 
+  // addTodo() {
+  //   const newTodo = {
+  //     text: this.todoText,
+  //     completed: false,
+  //   };
+  
+  //   this.todoService.addTodo(newTodo).subscribe({
+  //     next: (addedTodoFromServer) => {
+  //       const todoWithUIProps = {
+  //         ...addedTodoFromServer,
+  //         editing: false // <-- This is needed for your UI toggle logic
+  //       };
+  //       this.todos.push(todoWithUIProps); // push only after data is returned fully
+  //       this.todoText = ''; // clear input field
+  //     },
+  //     error: (error) => {
+  //       console.error('Error adding todo:', error);
+  //     }
+  //   });
+  // }
+  
   addTodo() {
+    if (!this.todoText || this.todoText.trim() === '') {
+      alert('Please enter a task before adding.');
+      return;
+    }
+  
     const newTodo = {
       text: this.todoText,
       completed: false,
@@ -36,14 +62,14 @@ export class TodoComponent implements OnInit {
       next: (addedTodoFromServer) => {
         const todoWithUIProps = {
           ...addedTodoFromServer,
-          editing: false // <-- This is needed for your UI toggle logic
+          editing: false,
         };
-        this.todos.push(todoWithUIProps); // push only after data is returned fully
-        this.todoText = ''; // clear input field
+        this.todos.unshift(todoWithUIProps); // Adds to the top
+        this.todoText = ''; // Clear input
       },
       error: (error) => {
         console.error('Error adding todo:', error);
-      }
+      },
     });
   }
   
