@@ -6,10 +6,15 @@ exports.getTodos = async (req, res) => {
 };
 
 exports.addTodo = async (req, res) => {
-  const newTodo = new Todo(req.body);
-  const saved = await newTodo.save();
-  res.status(201).json(saved);
+  try {
+    const newTodo = new Todo(req.body);
+    const saved = await newTodo.save();
+    res.status(201).json(saved); // ✅ Must send back the saved todo with _id and text
+  } catch (err) {
+    res.status(500).json({ message: 'Error adding todo', error: err });
+  }
 };
+
 
 
 exports.deleteTodo = async (req, res) => {

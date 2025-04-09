@@ -27,17 +27,27 @@ export class TodoComponent implements OnInit {
   }
 
   addTodo() {
-    if (this.todoText.trim()) {
-      const newTodo: Todo = {
-        text: this.todoText.trim(),
-        completed: false
-      };
-      this.todoService.addTodo(newTodo).subscribe(added => {
-        this.todos.push(added);
-        this.todoText = '';
-      });
-    }
+    const newTodo = {
+      text: this.todoText,
+      completed: false,
+    };
+  
+    this.todoService.addTodo(newTodo).subscribe({
+      next: (addedTodoFromServer) => {
+        const todoWithUIProps = {
+          ...addedTodoFromServer,
+          editing: false // <-- This is needed for your UI toggle logic
+        };
+        this.todos.push(todoWithUIProps); // push only after data is returned fully
+        this.todoText = ''; // clear input field
+      },
+      error: (error) => {
+        console.error('Error adding todo:', error);
+      }
+    });
   }
+  
+  
 
   deleteTodo(index: number) {
     const todo = this.todos[index];
@@ -63,22 +73,21 @@ export class TodoComponent implements OnInit {
     });
   }
 
- editTodo(index: number) {
-  this.todos[index].editing = true;
-}
-
-saveTodo(index: number) {
-  const todo = this.todos[index];
-  todo.editing = false;
-
-  // Update the todo on the server
-  this.todoService.updateTodo(todo).subscribe({
-    next: (updatedTodo) => {
-      this.todos[index] = updatedTodo;
-    },
-    error: (err) => {
-      console.error('Error updating todo:', err);
-    }
-  });
-}
-}
+  editTodo(index: number) {
+    this.todos[index].editing = true;
+  }
+  
+  saveTodo(index: number) {
+    const todo = this.todos[index];
+    todo.editing = false;
+  
+    this.todoService.updateTodo(todo).subscribe({
+      next: (updatedTodo) => {
+        this.todos[index] = updatedTodo;
+      },
+      error: (err) => {
+        console.error('Error updating todo:', err);
+      }
+    });
+  }
+}  
