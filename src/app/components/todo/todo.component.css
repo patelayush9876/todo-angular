@@ -107,3 +107,7 @@ li button:hover {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+.button-group {
+  display: flex;
+  gap: 8px;
+}

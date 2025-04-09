@@ -15,19 +15,34 @@
       *ngFor="let todo of todos; let i = index"
       [class.completed]="todo.completed"
     >
-      <label class="checkbox-label">
+      <!-- Wrapper for checkbox and text -->
+      <div class="todo-main">
         <input
           type="checkbox"
-          [(ngModel)]="todo.completed"
+          [checked]="todo.completed"
           (change)="toggleCompleted(i)"
-          [attr.title]="'Mark ' + todo.text + ' as completed'"
+          aria-label="Mark todo as complete"
         />
-        <span>{{ todo.text }}</span>
-      </label>
 
-      <button (click)="deleteTodo(i)" title="Delete this task">
-        Delete
-      </button>
+        <ng-container *ngIf="!todo.editing">
+          <span>{{ todo.text }}</span>
+        </ng-container>
+
+        <ng-container *ngIf="todo.editing">
+          <input
+            [(ngModel)]="todo.text"
+            class="edit-input"
+            title="Edit task text"
+          />
+        </ng-container>
+      </div>
+
+      <!-- Buttons -->
+      <div class="button-group">
+        <button *ngIf="!todo.editing" (click)="editTodo(i)">Edit</button>
+        <button *ngIf="todo.editing" (click)="saveTodo(i)">Save</button>
+        <button (click)="deleteTodo(i)" title="Delete this task">Delete</button>
+      </div>
     </li>
   </ul>
 </div>

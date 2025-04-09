@@ -1,31 +1,36 @@
+// src/app/services/todo.service.ts
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+export interface Todo {
+  _id?: string;
+  text: string;
+  completed: boolean;
+  editing?: boolean;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class TodoService {
-  todos: string[] = [];
+  private baseUrl = 'http://localhost:5000/api/todos'; // Change to your backend URL if different
 
-  constructor() {
-    this.loadTodos();
+  constructor(private http: HttpClient) {}
+
+  getTodos(): Observable<Todo[]> {
+    return this.http.get<Todo[]>(this.baseUrl);
   }
 
-  addTodo(todo: string) {
-    this.todos.push(todo);
-    this.saveTodos();
+  addTodo(todo: Todo): Observable<Todo> {
+    return this.http.post<Todo>(this.baseUrl, todo);
   }
 
-  deleteTodo(index: number) {
-    this.todos.splice(index, 1);
-    this.saveTodos();
+  deleteTodo(id: string): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/${id}`);
   }
-
-  saveTodos() {
-    localStorage.setItem('todos', JSON.stringify(this.todos));
-  }
-
-  loadTodos() {
-    const data = localStorage.getItem('todos');
-    this.todos = data ? JSON.parse(data) : [];
+  
+  updateTodo(todo: Todo): Observable<Todo> {
+    return this.http.put<Todo>(`${this.baseUrl}/${todo._id}`, todo);
   }
 }
