@@ -1,6 +1,9 @@
 <div class="todo-container">
   <h1>Todo List</h1>
-
+        <button  (click)="toggleDarkMode()">
+            {{ darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode' }}
+        </button>
+  <br><br><br>
   <label for="todoInput" class="visually-hidden">New Todo</label>
   <input
     id="todoInput"

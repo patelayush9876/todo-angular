@@ -111,3 +111,28 @@ li button:hover {
   display: flex;
   gap: 8px;
 }
+
+body.dark {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+body.dark .todo-container {
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
+
+body.dark input,
+body.dark .edit-input {
+  background-color: #333;
+  color: white;
+  border: 1px solid #555;
+}
+
+body.dark button {
+  background-color: #3a3a3a;
+}
+
+body.dark li {
+  background-color: #2b2b2b;
+}
