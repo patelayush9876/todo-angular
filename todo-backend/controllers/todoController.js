@@ -9,7 +9,7 @@ exports.addTodo = async (req, res) => {
   try {
     const newTodo = new Todo(req.body);
     const saved = await newTodo.save();
-    res.status(201).json(saved); // ✅ Must send back the saved todo with _id and text
+    res.status(201).json(saved); 
   } catch (err) {
     res.status(500).json({ message: 'Error adding todo', error: err });
   }
